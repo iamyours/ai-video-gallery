@@ -19,6 +19,12 @@
       "description": "印度车站里的狗狗火车，以及第一次试飞的小狐狸。",
       "banner": null,
       "banner_alt": null
+    },
+    {
+      "id": "脑洞大片",
+      "description": "巨猫公交、霓虹星尘树，和微缩工匠造的陀飞轮。",
+      "banner": null,
+      "banner_alt": null
     }
   ],
   "videos": [
@@ -224,6 +230,79 @@
       "tags": [
         "狐狸",
         "飞行"
+      ]
+    },
+    {
+      "slug": "giant-cat-city-bus",
+      "title_zh": "巨猫与城市公交",
+      "title_en": "A Giant Cat Next to a City Bus",
+      "category": "脑洞大片",
+      "episode": null,
+      "order": null,
+      "model": "Veo / Gemini",
+      "prompt": "a giant cat next to a city bus",
+      "prompt_source": null,
+      "source_url": "https://x.com/emildrops/status/2112490550586741033",
+      "notes": "Generated 2026-10-21 in Gemini (制作视频 tool, default Flash-Lite, landscape).",
+      "duration_s": 10.0,
+      "width": 1280,
+      "height": 720,
+      "aspect": "16:9",
+      "created": "2026-10-21T10:30:00-07:00",
+      "video": "videos/giant-cat-city-bus.mp4",
+      "cover": "covers/giant-cat-city-bus.jpg",
+      "tags": [
+        "巨猫",
+        "公交"
+      ]
+    },
+    {
+      "slug": "neon-stardust-tree",
+      "title_zh": "霓虹星尘树",
+      "title_en": "Giant Neon Stardust Tree",
+      "category": "脑洞大片",
+      "episode": null,
+      "order": null,
+      "model": "Veo / Gemini",
+      "prompt": "Low-angle shot of a giant glowing neon tree at night, hanging glass spheres filled with stardust swaying in the breeze, dreamy 9:16 cinematic video.",
+      "prompt_source": null,
+      "source_url": "https://x.com/binomicok7h3/status/2112814356593553656",
+      "notes": "Generated 2026-10-21 in Gemini (制作视频 tool, default Flash-Lite, landscape).",
+      "duration_s": 10.0,
+      "width": 1280,
+      "height": 720,
+      "aspect": "16:9",
+      "created": "2026-10-21T10:30:00-07:00",
+      "video": "videos/neon-stardust-tree.mp4",
+      "cover": "covers/neon-stardust-tree.jpg",
+      "tags": [
+        "霓虹",
+        "星尘",
+        "树"
+      ]
+    },
+    {
+      "slug": "chronocraft-miniature-watch",
+      "title_zh": "微缩工匠造陀飞轮",
+      "title_en": "ChronoCraft: Miniature Luxury Watchmaking",
+      "category": "脑洞大片",
+      "episode": null,
+      "order": null,
+      "model": "Veo / Gemini",
+      "prompt": "{\n  \"title\": \"ChronoCraft: Miniature Luxury Watchmaking\",\n  \"duration\": \"10 seconds\",\n  \"format\": \"16:9, 4K\",\n  \"style\": \"Cinematic photorealistic luxury commercial with hyper-realistic miniature diorama craftsmanship\",\n  \"prompt\": \"Create a seamless 10-second cinematic macro commercial showcasing the assembly of a high-complication mechanical tourbillon wristwatch inside a miniature watchmaker workshop. Tiny master horologists use precision tools, miniature robotic arms, and micro-lathes to assemble intricate gears, ruby jewels, a flying tourbillon, skeletonized dial, rose-gold bridges, blued-steel hands, and a polished titanium case. Show precise lubrication, gear alignment, sapphire crystal sealing, and black alligator leather strap integration. Use extreme macro cinematography, smooth tracking shots, fluid orbital movements, shallow depth of field, dramatic warm-and-cool studio lighting, authentic metallic textures, and realistic mechanical motion. End with a stunning three-quarter hero shot of the completed watch on a velvet pedestal, its tourbillon rotating as tiny artisans admire their masterpiece. Include subtle mechanical ticking and precision tool sounds. Ensure photorealistic materials, physically accurate mechanics, seamless transitions, and premium haute horlogerie aesthetics.\",\n  \"negative_prompt\": \"No dialogue, digital displays, smartwatches, floating components, incorrect gear mechanics, cartoon visuals, plastic textures, futuristic effects, distorted watch hands, jittery camera movements, or unrealistic materials.\"\n}",
+      "prompt_source": null,
+      "source_url": "https://x.com/Fujimoto_hina/status/2111038393035657357",
+      "notes": "Generated 2026-10-21 in Gemini (制作视频 tool, default Flash-Lite, landscape).",
+      "duration_s": 10.0,
+      "width": 1280,
+      "height": 720,
+      "aspect": "16:9",
+      "created": "2026-10-21T10:30:00-07:00",
+      "video": "videos/chronocraft-miniature-watch.mp4",
+      "cover": "covers/chronocraft-miniature-watch.jpg",
+      "tags": [
+        "微缩",
+        "陀飞轮"
       ]
     }
   ]
