@@ -24,6 +24,12 @@ python3 -m http.server 8080
 python3 scripts/check_gallery.py
 ```
 
+## 竖滑浏览
+
+筛选栏上的「刷视频」按当前分类进入全屏竖滑。点卡片也会从那一条开始，地址是 `?v=<slug>`。上下滑、滚轮或方向键一次换一条。当前这条静音自动循环，滑走就暂停，只预加载相邻的视频。右侧「提示词」打开底部面板，可以复制；合集会列出三段片段的提示词。没有原文时显示「提示词未记录」。
+
+`tags` 是额外的标签，只写标题或已有字段里已经出现的词，例如「锦鲤池」「合集」。分类、模型、画幅和时长不用再写进 `tags`，页面会单独显示。
+
 ## 新增一条视频
 
 1. 选一个英文 slug，只用小写字母、数字和连字符，例如 `night-market`。
@@ -56,6 +62,7 @@ python3 scripts/check_gallery.py
   "width": 1280,
   "height": 720,
   "aspect": "16:9",
+  "tags": ["夜市"],
   "created": "2026-10-21T12:00:00+08:00",
   "video": "videos/night-market.mp4",
   "cover": "covers/night-market.jpg"
@@ -107,7 +114,8 @@ Gemini 私人对话地址不要写进 `source_url`，也不要写进公开的 ma
 | `prompt` | 提示词原文，或 `null` |
 | `prompt_source` | 出处说明，不是链接 |
 | `source_url` | 可公开的灵感链接，或 `null` |
-| `duration_s` / `aspect` / `width` / `height` / `created` | 时长、画幅、尺寸、日期 |
+| `duration_s` / `width` / `height` / `created` | 时长、尺寸、日期 |
+| `aspect` / `tags` | 画幅，以及从标题或已有字段抽出的标签 |
 | `video` / `cover` | 仓库内相对路径 |
 | `notes` | 只放在数据文件里，页面不展示 |
 

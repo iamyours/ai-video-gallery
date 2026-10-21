@@ -12,6 +12,14 @@
   var currentSlug = null;
   var activeList = null;
   var copyTimers = new WeakMap();
+  var suppressCloseNav = false;
+  var feedItems = [];
+  var feedSlides = [];
+  var feedIndex = -1;
+  var feedListKey = '';
+  var feedMuted = true;
+  var feedWheelLock = false;
+  var sheetOpen = false;
 
   var statusEl = document.getElementById('status');
   var catalogEl = document.getElementById('catalog');
@@ -22,6 +30,10 @@
   var playlistBar = document.getElementById('playlist-bar');
   var errorEl = document.getElementById('player-error');
   var live = document.getElementById('live');
+  var feedRoot = document.getElementById('feed');
+  var feedScroller = document.getElementById('feed-scroller');
+  var feedSheet = document.getElementById('feed-sheet');
+  var feedSheetBody = document.getElementById('feed-sheet-body');
 
   document.getElementById('player-close').addEventListener('click', function () {
     go(filterHash());
@@ -38,7 +50,7 @@
     activeList = null;
     highlightCard(null);
     document.title = 'AI 视频画廊';
-    if (parseRoute().type === 'video') {
+    if (!suppressCloseNav && parseRoute().type === 'video' && !feedParam()) {
       history.replaceState(null, '', location.pathname + location.search + filterHash());
     }
   });
@@ -75,6 +87,47 @@
   });
 
   window.addEventListener('hashchange', applyRoute);
+  window.addEventListener('popstate', applyRoute);
+  document.getElementById('feed-entry').addEventListener('click', function () {
+    var list = currentFeedList();
+    if (!list.length) return;
+    openFeed(list[0].slug);
+  });
+  document.getElementById('feed-back').addEventListener('click', closeFeed);
+  document.getElementById('feed-sheet-close').addEventListener('click', closeSheet);
+  document.getElementById('feed-sheet-backdrop').addEventListener('click', closeSheet);
+  feedScroller.addEventListener('scroll', function () {
+    window.requestAnimationFrame(syncFeedFromScroll);
+  }, { passive: true });
+  feedScroller.addEventListener('wheel', function (event) {
+    if (feedRoot.hidden || sheetOpen) return;
+    event.preventDefault();
+    if (feedWheelLock) return;
+    if (Math.abs(event.deltaY) < 4 && Math.abs(event.deltaX) < 4) return;
+    var dir = Math.abs(event.deltaY) >= Math.abs(event.deltaX)
+      ? (event.deltaY > 0 ? 1 : -1)
+      : (event.deltaX > 0 ? 1 : -1);
+    feedWheelLock = true;
+    moveFeed(dir);
+    setTimeout(function () { feedWheelLock = false; }, 560);
+  }, { passive: false });
+  window.addEventListener('keydown', function (event) {
+    if (feedRoot.hidden) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      if (sheetOpen) closeSheet();
+      else closeFeed();
+      return;
+    }
+    if (sheetOpen) return;
+    if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+      event.preventDefault();
+      moveFeed(1);
+    } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+      event.preventDefault();
+      moveFeed(-1);
+    }
+  });
   var filterBar = document.querySelector('.filter-bar');
   window.addEventListener('scroll', function () {
     if (filterBar) filterBar.classList.toggle('is-stuck', window.scrollY > 8);
@@ -99,14 +152,24 @@
 
   function applyRoute() {
     var route = parseRoute();
+    var querySlug = feedParam();
     if (route.type === 'all') filter = 'all';
     else if (route.type === 'cat' && categoryKnown(route.category)) filter = route.category;
     else if (route.type === 'video' && !booted) {
       if (route.list && categoryKnown(route.list)) filter = route.list;
       else if (bySlug.has(route.slug)) filter = bySlug.get(route.slug).category;
     }
+    if (querySlug && bySlug.has(querySlug) && !currentFeedList().some(function (item) { return item.slug === querySlug; })) {
+      filter = bySlug.get(querySlug).category;
+    }
     booted = true;
     render();
+    if (querySlug && bySlug.has(querySlug)) {
+      closePlayerQuiet();
+      showFeed(querySlug);
+      return;
+    }
+    hideFeed();
     if (route.type === 'video' && bySlug.has(route.slug)) {
       var seq = route.list ? sequenceFor(route.list) : null;
       var inSeq = seq && seq.items.some(function (item) { return item.slug === route.slug; });
@@ -275,14 +338,14 @@
     card.className = 'card';
     card.dataset.slug = item.slug;
     card.dataset.aspect = item.aspect || '';
-    var hash = videoHash(item.slug);
+    var href = feedHref(item.slug);
     var link = document.createElement('a');
     link.className = 'card-link';
-    link.href = hash;
+    link.href = href;
     link.addEventListener('click', function (event) {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
-      go(hash);
+      openFeed(item.slug);
     });
 
     var media = document.createElement('div');
@@ -501,6 +564,13 @@
     return button;
   }
 
+  function closePlayerQuiet() {
+    if (!dialog.open) return;
+    suppressCloseNav = true;
+    dialog.close();
+    suppressCloseNav = false;
+  }
+
   function closePlayer() {
     if (dialog.open) dialog.close();
     else {
@@ -651,6 +721,359 @@
     } else {
       fallback();
     }
+  }
+
+  function currentFeedList() {
+    if (filter === 'all') return videos.slice();
+    return videos.filter(function (item) { return item.category === filter; });
+  }
+
+  function feedParam() {
+    return new URLSearchParams(location.search).get('v');
+  }
+
+  function feedHref(slug) {
+    var url = new URL(location.href);
+    url.searchParams.set('v', slug);
+    return url.pathname + url.search + url.hash;
+  }
+
+  function openFeed(slug) {
+    if (!bySlug.has(slug)) return;
+    var url = new URL(location.href);
+    url.searchParams.set('v', slug);
+    var next = url.pathname + url.search + url.hash;
+    var current = location.pathname + location.search + location.hash;
+    if (next !== current) history.pushState({ feed: true }, '', next);
+    applyRoute();
+  }
+
+  function closeFeed() {
+    closeSheet();
+    if (history.state && history.state.feed) {
+      history.back();
+      return;
+    }
+    var url = new URL(location.href);
+    url.searchParams.delete('v');
+    history.replaceState({}, '', url.pathname + url.search + url.hash);
+    applyRoute();
+  }
+
+  function showFeed(slug) {
+    var list = currentFeedList();
+    if (!list.some(function (item) { return item.slug === slug; })) return;
+    var key = list.map(function (item) { return item.slug; }).join('|');
+    var index = list.findIndex(function (item) { return item.slug === slug; });
+    feedRoot.hidden = false;
+    document.body.classList.add('feed-open');
+    if (feedListKey !== key) {
+      feedListKey = key;
+      buildFeed(list);
+    }
+    void feedScroller.offsetHeight;
+    scrollFeedTo(index, false);
+  }
+
+  function hideFeed() {
+    if (feedRoot.hidden) return;
+    closeSheet();
+    feedSlides.forEach(function (slide) {
+      var node = slide.querySelector('video');
+      node.pause();
+      node.removeAttribute('src');
+      node.load();
+    });
+    feedRoot.hidden = true;
+    document.body.classList.remove('feed-open');
+    feedListKey = '';
+    feedIndex = -1;
+    feedItems = [];
+    feedSlides = [];
+    feedScroller.replaceChildren();
+    if (!dialog.open) document.title = 'AI 视频画廊';
+  }
+
+  function buildFeed(list) {
+    feedItems = list;
+    feedSlides = [];
+    feedIndex = -1;
+    feedScroller.replaceChildren();
+    list.forEach(function (item, index) {
+      feedScroller.appendChild(buildSlide(item, index));
+    });
+  }
+
+  function buildSlide(item, index) {
+    var slide = document.createElement('article');
+    slide.className = 'feed-slide ' + (item.aspect === '16:9' ? 'is-landscape' : 'is-portrait');
+    slide.dataset.index = String(index);
+    var frame = document.createElement('div');
+    frame.className = 'feed-frame';
+    var node = document.createElement('video');
+    node.poster = mediaUrl(item.cover);
+    node.preload = 'none';
+    node.loop = true;
+    node.muted = true;
+    node.playsInline = true;
+    node.setAttribute('playsinline', '');
+    node.setAttribute('aria-label', item.title_zh || item.slug);
+    var hit = document.createElement('button');
+    hit.type = 'button';
+    hit.className = 'feed-hit';
+    hit.setAttribute('aria-label', '播放或暂停');
+    hit.addEventListener('click', function () {
+      if (node.paused) playFeedVideo(node);
+      else node.pause();
+      slide.classList.toggle('is-paused', node.paused);
+    });
+    var pause = document.createElement('span');
+    pause.className = 'feed-pause';
+    pause.appendChild(playIcon());
+    frame.append(node, hit, document.createElement('div'), pause);
+    frame.children[2].className = 'feed-shade';
+    frame.append(buildFeedMeta(item), buildFeedActions(item, node));
+    slide.appendChild(frame);
+    feedSlides[index] = slide;
+    return slide;
+  }
+
+  function buildFeedMeta(item) {
+    var meta = document.createElement('div');
+    meta.className = 'feed-meta';
+    meta.appendChild(el('h2', 'feed-title', item.title_zh || item.slug));
+    var chips = document.createElement('div');
+    chips.className = 'feed-chips';
+    feedChipLabels(item).forEach(function (label) {
+      chips.appendChild(el('span', 'feed-chip', label));
+    });
+    meta.appendChild(chips);
+    return meta;
+  }
+
+  function feedChipLabels(item) {
+    var labels = [];
+    function add(label) {
+      if (!label || labels.indexOf(label) !== -1) return;
+      labels.push(String(label));
+    }
+    add(item.category);
+    add(item.model);
+    add(item.aspect);
+    add(formatDuration(item.duration_s));
+    if (Array.isArray(item.tags)) item.tags.forEach(add);
+    return labels;
+  }
+
+  function buildFeedActions(item, node) {
+    var actions = document.createElement('div');
+    actions.className = 'feed-actions';
+    actions.append(
+      feedAction('💬', '提示词', function () { openSheet(item); }),
+      feedAction('🔗', '链接', function (caption) {
+        copyText(rawUrl(item), caption, '已复制视频链接');
+      }),
+      feedAction('↗', '分享', function (caption) { shareItem(item, caption); }),
+      feedAction(feedMuted ? '🔇' : '🔊', feedMuted ? '开声音' : '静音', function () { toggleFeedMute(node); })
+    );
+    return actions;
+  }
+
+  function feedAction(emoji, label, onClick) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'feed-action';
+    var bubble = el('span', 'feed-bubble', emoji);
+    var caption = el('span', 'feed-caption', label);
+    button.append(bubble, caption);
+    button.addEventListener('click', function (event) {
+      event.stopPropagation();
+      onClick(caption, bubble, button);
+    });
+    return button;
+  }
+
+  function scrollFeedTo(index, smooth) {
+    var slide = feedSlides[index];
+    if (!slide) return;
+    var top = index * feedScroller.clientHeight;
+    if (!smooth && Math.abs(feedScroller.scrollTop - top) < 2) {
+      activateFeed(index);
+      return;
+    }
+    feedScroller.scrollTo({ top: top, behavior: smooth ? 'smooth' : 'auto' });
+    if (!smooth) activateFeed(index);
+  }
+
+  function moveFeed(delta) {
+    if (feedIndex < 0) return;
+    var next = feedIndex + delta;
+    if (next < 0 || next >= feedItems.length) return;
+    scrollFeedTo(next, true);
+  }
+
+  function syncFeedFromScroll() {
+    if (feedRoot.hidden || !feedItems.length) return;
+    var height = feedScroller.clientHeight || 1;
+    var index = Math.round(feedScroller.scrollTop / height);
+    if (index < 0) index = 0;
+    if (index >= feedItems.length) index = feedItems.length - 1;
+    if (index !== feedIndex) activateFeed(index);
+  }
+
+  function activateFeed(index) {
+    if (index < 0 || index >= feedItems.length) return;
+    var changed = index !== feedIndex;
+    feedIndex = index;
+    feedSlides.forEach(function (slide, i) {
+      var node = slide.querySelector('video');
+      var distance = Math.abs(i - index);
+      if (distance <= 1) {
+        var src = mediaUrl(feedItems[i].video);
+        if (node.getAttribute('src') !== src) {
+          node.poster = mediaUrl(feedItems[i].cover);
+          node.preload = distance === 0 ? 'auto' : 'metadata';
+          node.src = src;
+        }
+      } else if (node.getAttribute('src')) {
+        node.pause();
+        node.removeAttribute('src');
+        node.load();
+      }
+      if (i !== index) {
+        node.pause();
+        slide.classList.remove('is-paused');
+      }
+    });
+    var current = feedSlides[index].querySelector('video');
+    current.loop = true;
+    current.muted = feedMuted;
+    playFeedVideo(current);
+    feedSlides[index].classList.remove('is-paused');
+    var count = document.getElementById('feed-count');
+    if (count) count.textContent = (index + 1) + ' / ' + feedItems.length;
+    document.title = (feedItems[index].title_zh || '刷视频') + ' · AI 视频画廊';
+    updateMuteButtons();
+    if (changed) {
+      rememberFeedSlug(feedItems[index].slug);
+      live.textContent = (feedItems[index].title_zh || '') + '，' + (index + 1) + ' / ' + feedItems.length;
+    }
+  }
+
+  function playFeedVideo(node) {
+    node.muted = feedMuted;
+    var pending = node.play();
+    if (pending && typeof pending.catch === 'function') {
+      pending.catch(function () {
+        node.muted = true;
+        feedMuted = true;
+        updateMuteButtons();
+        var again = node.play();
+        if (again && typeof again.catch === 'function') again.catch(function () {});
+      });
+    }
+  }
+
+  function toggleFeedMute(node) {
+    feedMuted = !feedMuted;
+    if (node) {
+      node.muted = feedMuted;
+      if (!feedMuted && node.paused) playFeedVideo(node);
+    }
+    updateMuteButtons();
+  }
+
+  function updateMuteButtons() {
+    feedSlides.forEach(function (slide) {
+      var buttons = slide.querySelectorAll('.feed-action');
+      var sound = buttons[buttons.length - 1];
+      if (!sound) return;
+      var bubble = sound.querySelector('.feed-bubble');
+      var caption = sound.querySelector('.feed-caption');
+      if (bubble) bubble.textContent = feedMuted ? '🔇' : '🔊';
+      if (caption && caption.dataset.label == null) caption.textContent = feedMuted ? '开声音' : '静音';
+      sound.setAttribute('aria-pressed', feedMuted ? 'false' : 'true');
+      sound.setAttribute('aria-label', feedMuted ? '开启声音' : '静音');
+    });
+  }
+
+  function rememberFeedSlug(slug) {
+    var url = new URL(location.href);
+    if (url.searchParams.get('v') === slug) return;
+    url.searchParams.set('v', slug);
+    history.replaceState(history.state, '', url.pathname + url.search + url.hash);
+  }
+
+  function openSheet(item) {
+    feedSheetBody.replaceChildren();
+    appendPromptBlock(feedSheetBody, '提示词', item.prompt);
+    var sourceText = promptSourceText(item.prompt_source);
+    if (sourceText) feedSheetBody.appendChild(el('p', 'prompt-source', '出处：' + sourceText));
+    if (Array.isArray(item.segments) && item.segments.length) {
+      item.segments.forEach(function (slug, index) {
+        var seg = bySlug.get(slug);
+        if (!seg) return;
+        appendPromptBlock(feedSheetBody, (index + 1) + '. ' + (seg.title_zh || slug), seg.prompt);
+      });
+    }
+    var inspiration = publicInspirationUrl(item.source_url);
+    if (inspiration) {
+      var link = document.createElement('a');
+      link.className = 'inspiration';
+      link.href = inspiration;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = '灵感来源';
+      feedSheetBody.appendChild(link);
+    }
+    feedSheet.hidden = false;
+    sheetOpen = true;
+  }
+
+  function appendPromptBlock(parent, title, prompt) {
+    var block = document.createElement('section');
+    block.className = 'feed-prompt-block';
+    var head = document.createElement('div');
+    head.className = 'prompt-head';
+    head.appendChild(el('h3', null, title));
+    var hasPrompt = typeof prompt === 'string' && prompt.length > 0;
+    if (hasPrompt) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'btn btn-small';
+      button.textContent = '复制提示词';
+      button.addEventListener('click', function () {
+        copyText(prompt, button, '已复制提示词');
+      });
+      head.appendChild(button);
+    }
+    block.appendChild(head);
+    if (hasPrompt) {
+      var pre = document.createElement('pre');
+      pre.className = 'prompt-text';
+      pre.textContent = prompt;
+      block.appendChild(pre);
+    } else {
+      block.appendChild(el('p', 'prompt-missing', '提示词未记录'));
+    }
+    parent.appendChild(block);
+  }
+
+  function closeSheet() {
+    if (feedSheet.hidden) return;
+    feedSheet.hidden = true;
+    sheetOpen = false;
+  }
+
+  function shareItem(item, caption) {
+    var url = new URL(location.href);
+    url.searchParams.set('v', item.slug);
+    var shareUrl = url.origin + url.pathname + url.search;
+    if (navigator.share) {
+      navigator.share({ title: item.title_zh || item.slug, url: shareUrl }).catch(function () {});
+      return;
+    }
+    copyText(shareUrl, caption, '已复制分享链接');
   }
 
   function playIcon() {

@@ -33,12 +33,13 @@
           <h1>AI 视频画廊</h1>
         </div>
       </div>
-      <p class="lede">点开封面，播放的是本站上的 mp4。提示词只展示有记录的原文，可以一键复制。<span id="count"></span></p>
+      <p class="lede">点开封面进入竖滑浏览，播放的是本站上的 mp4。提示词只展示有记录的原文，可以一键复制。<span id="count"></span></p>
     </div>
   </header>
   <div class="filter-bar">
-    <div class="wrap">
+    <div class="wrap filter-row">
       <nav id="filters" aria-label="分类"></nav>
+      <button type="button" id="feed-entry" class="btn btn-primary feed-entry" title="沉浸浏览">刷视频</button>
     </div>
   </div>
   <main class="wrap" id="catalog-wrap">
@@ -69,6 +70,22 @@
       </div>
     </div>
   </dialog>
+  <div id="feed" class="feed" hidden>
+    <div id="feed-scroller" class="feed-scroller" tabindex="-1"></div>
+    <button type="button" id="feed-back" class="feed-back">返回</button>
+    <p id="feed-count" class="feed-count"></p>
+    <div id="feed-sheet" class="feed-sheet" hidden>
+      <button type="button" id="feed-sheet-backdrop" class="feed-sheet-backdrop" aria-label="关闭提示词"></button>
+      <div class="feed-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="feed-sheet-title">
+        <div class="feed-sheet-handle" aria-hidden="true"></div>
+        <div class="feed-sheet-head">
+          <h2 id="feed-sheet-title">提示词</h2>
+          <button type="button" id="feed-sheet-close" class="btn btn-small">关闭</button>
+        </div>
+        <div id="feed-sheet-body" class="feed-sheet-body"></div>
+      </div>
+    </div>
+  </div>
   <p id="live" class="sr-only" aria-live="polite"></p>
   <noscript>
     <p class="noscript wrap">这个画廊需要 JavaScript 才能列出视频。你仍然可以打开 <a href="data/manifest.json">数据文件</a>。</p>

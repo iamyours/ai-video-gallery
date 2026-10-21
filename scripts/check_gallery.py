@@ -130,6 +130,13 @@ def main():
         prompt = item.get("prompt", None)
         if prompt is not None and (not isinstance(prompt, str) or not prompt.strip()):
             fail(f"{slug} prompt must be a non-empty string or null")
+        tags = item.get("tags")
+        if not isinstance(tags, list):
+            fail(f"{slug} tags must be an array")
+        else:
+            for tag in tags:
+                if not isinstance(tag, str) or not tag.strip():
+                    fail(f"{slug} has an empty tag")
         if "segments" in item:
             orders = []
             for segment in item["segments"]:

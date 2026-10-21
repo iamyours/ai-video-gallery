@@ -1,5 +1,5 @@
 {
-  "about": "画廊的唯一数据源。新增视频时往 videos 追加一条，并把 mp4 与封面放到对应目录。prompt 只能填原文；没有记录就用 null，页面会显示「提示词未记录」。source_url 只放可以公开的灵感链接。Gemini 私人对话地址不要写进来。",
+  "about": "画廊的唯一数据源。新增视频时往 videos 追加一条，并把 mp4 与封面放到对应目录。prompt 只能填原文；没有记录就用 null，页面会显示「提示词未记录」。source_url 只放可以公开的灵感链接。Gemini 私人对话地址不要写进来。 tags 只写能从标题或已有字段得出的词。",
   "raw_base": "https://raw.githubusercontent.com/iamyours/ai-video-gallery/main/",
   "categories": [
     {
@@ -45,6 +45,11 @@
         "dango-ep1-01-koi-pond",
         "dango-ep1-02-clover-forest",
         "dango-ep1-03-snowy-mailbox"
+      ],
+      "tags": [
+        "团子",
+        "第1集",
+        "合集"
       ]
     },
     {
@@ -65,7 +70,12 @@
       "aspect": "9:16",
       "created": "2026-10-19T21:24:36-07:00",
       "video": "videos/dango-ep1-01-koi-pond.mp4",
-      "cover": "covers/dango-ep1-01-koi-pond.jpg"
+      "cover": "covers/dango-ep1-01-koi-pond.jpg",
+      "tags": [
+        "团子",
+        "第1集",
+        "锦鲤池"
+      ]
     },
     {
       "slug": "dango-ep1-02-clover-forest",
@@ -85,7 +95,12 @@
       "aspect": "9:16",
       "created": "2026-10-19T21:27:23-07:00",
       "video": "videos/dango-ep1-02-clover-forest.mp4",
-      "cover": "covers/dango-ep1-02-clover-forest.jpg"
+      "cover": "covers/dango-ep1-02-clover-forest.jpg",
+      "tags": [
+        "团子",
+        "第1集",
+        "四叶草"
+      ]
     },
     {
       "slug": "dango-ep1-03-snowy-mailbox",
@@ -105,7 +120,13 @@
       "aspect": "9:16",
       "created": "2026-10-19T21:35:51-07:00",
       "video": "videos/dango-ep1-03-snowy-mailbox.mp4",
-      "cover": "covers/dango-ep1-03-snowy-mailbox.jpg"
+      "cover": "covers/dango-ep1-03-snowy-mailbox.jpg",
+      "tags": [
+        "团子",
+        "第1集",
+        "雪夜",
+        "寄信"
+      ]
     },
     {
       "slug": "miniature-treehouse-tweezers",
@@ -125,7 +146,11 @@
       "aspect": "16:9",
       "created": "2026-10-18T19:51:13-07:00",
       "video": "videos/miniature-treehouse-tweezers.mp4",
-      "cover": "covers/miniature-treehouse-tweezers.jpg"
+      "cover": "covers/miniature-treehouse-tweezers.jpg",
+      "tags": [
+        "树屋",
+        "镊子"
+      ]
     },
     {
       "slug": "macro-snail-dewdrops",
@@ -145,7 +170,12 @@
       "aspect": "16:9",
       "created": "2026-10-18T19:51:13-07:00",
       "video": "videos/macro-snail-dewdrops.mp4",
-      "cover": "covers/macro-snail-dewdrops.jpg"
+      "cover": "covers/macro-snail-dewdrops.jpg",
+      "tags": [
+        "蜗牛",
+        "露珠",
+        "微距"
+      ]
     },
     {
       "slug": "dog-train-station",
@@ -165,7 +195,12 @@
       "aspect": "16:9",
       "created": "2026-10-18T19:51:13-07:00",
       "video": "videos/dog-train-station.mp4",
-      "cover": "covers/dog-train-station.jpg"
+      "cover": "covers/dog-train-station.jpg",
+      "tags": [
+"狗",
+      "火车",
+      "进站"
+      ]
     },
     {
       "slug": "baby-fox-first-flight",
@@ -185,7 +220,11 @@
       "aspect": "16:9",
       "created": "2026-10-18T19:51:13-07:00",
       "video": "videos/baby-fox-first-flight.mp4",
-      "cover": "covers/baby-fox-first-flight.jpg"
+      "cover": "covers/baby-fox-first-flight.jpg",
+      "tags": [
+        "狐狸",
+        "飞行"
+      ]
     }
   ]
 }
