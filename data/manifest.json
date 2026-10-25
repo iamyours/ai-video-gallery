@@ -360,6 +360,31 @@
         "卧室",
         "自拍"
       ]
+    },
+    {
+      "slug": "yellow-gesture-dance",
+      "title_zh": "黄色运动装手势舞",
+      "title_en": null,
+      "category": "小红书起号",
+      "episode": null,
+      "order": null,
+      "model": "image2（gpt-image-2） / Muse（muse.ai）",
+      "prompt": "Grok Video Prompt:\n\nMaster Prompt:\nA cinematic AI-generated gesture-dance clip, one single uncut take: a beautiful adult woman with very long straight dark hair, wearing a bright-yellow spaghetti-strap sports bra and matching yellow high-waist leggings with a small pendant necklace, performs a playful in-place gesture dance against a plain light-grey studio wall. Timed to a dance track at about 129 BPM — one beat every 0.46 seconds, with a stronger accent every two beats: she opens by leaning in close to the camera with a bright smile, then settles back into position and finds the groove; sweeps one arm out while her hips sway and both hands point downward in small pulses; lets one hand brush her upper chest once and brings a fingertip to her lips in a brief hush gesture; points straight at the camera with a grin; trades small fingertip gestures at her waist; opens both arms wide, palms up, rolling side to side; crosses her arms briefly in front of her torso; and finishes with both hands raised beside her face, palms out, fingers spread, waving happily as the clip cuts mid-wave. She never steps away from her spot. Camera not moving, locked tripod, full-body framing cropped at mid-shin, 9:16. Cool grey studio grade with the yellow outfit as the single saturated color pop, large soft even light, clean flawless skin. AUDIO: a dance track at about 129 BPM, no dialogue, no sound effects. Avoid: warped hands, extra fingers, drifting face, outfit color shifting toward orange, gestures drifting off the accent beats, a frozen ending pose.\n\nShot (0-1s):\nShe leans in close toward the camera with a bright playful smile, arms folded low in front of her, then begins easing back to her standing spot. AUDIO: track kicks in at about 129 BPM. Avoid: the lean becoming a fall, face warping at close range.\n\nShot (1-2s):\nSettled in position, she sways gently in place, right hand lifting in a small flick near her shoulder, gaze locked on the lens. Avoid: sway speeding up, hair clipping her shoulders.\n\nShot (2-3s):\nHer right arm sweeps out to her side as her hips sway left and right; both hands drop low and point downward in small pulsing taps. Avoid: pointing turning into reaching, hips freezing.\n\nShot (3-4s):\nOne hand rises and brushes her upper chest once, briefly, then her fingertip comes to her lips in a playful hush gesture held for a breath. Avoid: the hand lingering on her chest, the hush gesture covering her whole mouth.\n\nShot (4-5s):\nThe fingertip leaves her lips and points straight at the camera; she holds the point with a widening grin. Avoid: the pointing arm bending oddly, grin turning into a grimace.\n\nShot (5-6s):\nShe keeps small pointing and wrist-roll gestures at waist height, alternating hands, still grinning, body swaying underneath. Avoid: gestures tangling between hands, extra fingers.\n\nShot (6-7s):\nBoth hands trade tiny fingertip gestures in front of her waist — fingertips meeting and parting in time — her smile at its most playful, eyes squinting happily. Avoid: the fingertip gestures blurring into one blob, smile dropping.\n\nShot (7-8s):\nHands alternate pointing downward at her sides as she turns a quarter to her side, hair swinging with the motion. Avoid: the turn continuing into a full spin, hair covering her face.\n\nShot (8-9s):\nBack to front, both arms open out to her sides, palms turning up, as her torso rolls side to side on the accents. Avoid: arms rising above shoulder height, rolls becoming jerky.\n\nShot (9-10s):\nThe arms open wider still, palms fully open, the side-to-side roll continuing smooth and unhurried against the fast beat. Avoid: palms folding closed, elbows locking stiff.\n\nShot (10-11s):\nArms held out at horizontal, she bounces in small pulses on the accents, expression bright and steady. Avoid: bounces turning into jumps, feet leaving the floor.\n\nShot (11-12s):\nBoth arms fold across in front of her torso for a beat, then open back out with a small flick of one hand. Avoid: arms sticking in the crossed position, the flick hitting her own shoulder.\n\nShot (12-13s):\nBoth hands rise to frame her face, palms out beside her cheeks, and she breaks into a big joyful smile. Avoid: hands covering her ears or eyes, smile becoming a shout.\n\nShot (13-14s):\nHands stay high beside her head, palms facing the camera, fingers spread, waving gently in time; her laughter-like smile holds. Avoid: the wave speeding into a blur, fingers merging.\n\nShot (14-14.84s):\nThe waving continues as one hand starts a small sweep across in front of her face — the clip cuts off mid-motion, no ending pose. AUDIO: track still playing at the cut. Avoid: an invented finishing gesture, hands dropping early.\n",
+      "prompt_source": "@sandmrk",
+      "source_url": "https://x.com/sandmrk/status/2113826242315391015",
+      "notes": "参考图是 image2 生成的 AI 原创形象；Muse 只生成了 10 秒，原提示词的分镜写到 14.84 秒，所以结尾几个镜头没有还原。作者 @sandmrk，原帖标注为 Grok 视频提示词。提示词后半在评论 https://x.com/sandmrk/status/2113826333902131600 。作者的原视频帖 https://x.com/sandmrk/status/2113826121565503654 。",
+      "duration_s": 10.0,
+      "width": 768,
+      "height": 1152,
+      "aspect": "2:3",
+      "created": null,
+      "video": "videos/yellow-gesture-dance.mp4",
+      "cover": "covers/yellow-gesture-dance.jpg",
+      "tags": [
+        "黄色",
+        "运动装",
+        "手势舞"
+      ]
     }
   ]
 }
