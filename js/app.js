@@ -390,8 +390,8 @@
       errorEl.hidden = true;
       video.setAttribute('aria-label', item.title_zh || item.slug);
       video.poster = mediaUrl(item.cover);
-      video.classList.toggle('is-portrait', item.aspect === '9:16');
-      video.classList.toggle('is-landscape', item.aspect !== '9:16');
+      video.classList.toggle('is-portrait', item.aspect === '9:16' || item.aspect === '2:3');
+      video.classList.toggle('is-landscape', item.aspect !== '9:16' && item.aspect !== '2:3');
       video.src = mediaUrl(item.video);
       if (options.autoplay) {
         var pending = video.play();
@@ -651,7 +651,7 @@
   }
 
   function aspectClass(aspect) {
-    if (aspect === '9:16') return 'is-portrait';
+    if (aspect === '9:16' || aspect === '2:3') return 'is-portrait';
     if (aspect === '16:9') return 'is-landscape';
     return 'is-other';
   }
@@ -807,6 +807,7 @@
   function buildSlide(item, index) {
     var slide = document.createElement('article');
     slide.className = 'feed-slide ' + (item.aspect === '16:9' ? 'is-landscape' : 'is-portrait');
+    if (item.aspect === '2:3') slide.classList.add('is-2x3');
     slide.dataset.index = String(index);
     var frame = document.createElement('div');
     frame.className = 'feed-frame';
