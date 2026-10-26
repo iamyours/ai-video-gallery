@@ -34,7 +34,7 @@
     },
     {
       "id": "X 每日精选",
-      "description": "简笔画变 3D 手办。",
+      "description": "从 X 上挑出来的作品，用 Muse 复刻。",
       "banner": null,
       "banner_alt": null
     }
@@ -215,9 +215,9 @@
       "video": "videos/dog-train-station.mp4",
       "cover": "covers/dog-train-station.jpg",
       "tags": [
-"狗",
-      "火车",
-      "进站"
+        "狗",
+        "火车",
+        "进站"
       ]
     },
     {
@@ -415,6 +415,31 @@
         "简笔画",
         "3D",
         "手办"
+      ]
+    },
+    {
+      "slug": "gagarot200-2113466692861038957",
+      "title_zh": "小熊自拍少女",
+      "title_en": null,
+      "category": "X 每日精选",
+      "episode": null,
+      "order": null,
+      "model": "image2（gpt-image-2） / Muse（muse.ai）",
+      "prompt": "Using the attached image as the exact first frame, create a single continuous 7 to 8 second handheld selfie video with no cuts. Keep the woman's face, hair, makeup, white ribbed top and warm bedroom exactly consistent. From 0 to 1 second, hold the wide-eyed, slightly parted-lip pout with a slow blink and subtle head tilt. Around 1 to 2 seconds, her index finger enters from the bottom right and points playfully toward the lens as her pout deepens and her eyes narrow slightly. Around 2 to 3 seconds, she scrunches her face in a playful grimace, wrinkling her nose and squeezing her eyes shut. From 3 to 4.5 seconds, she leans back and the framing opens to a medium shot as she wraps both arms around a large light-brown teddy bear with a red polka-dot bow, closes her eyes, nuzzles her cheek against it and smiles sweetly, revealing a bed full of plush toys, floral curtains and warm lamplight behind her. From 4.5 to 5.5 seconds, she bounces forward toward the camera, still hugging the bear, with a bright open smile. From 5.5 seconds to the end, she settles back into close-up over the bear, makes a soft kiss pout at the lens, then relaxes into a gentle tilted smile with direct eye contact. Camera movement is handheld selfie style throughout, with natural breathing shake and framing that shifts only because she leans in and out, never a smooth gimbal move or a cut. Pacing is soft, playful and intimate. No dialogue, just quiet cozy bedroom ambience if audio is included.",
+      "prompt_source": "@gagarot200（Muse 分析原视频反推）",
+      "source_url": "https://x.com/gagarot200/status/2113466692861038957",
+      "notes": "首帧由 gpt-image-2 按 Muse 反推的图片提示词生成；原片 7.4 秒，Muse 单段最短 10 秒。",
+      "duration_s": 10.0,
+      "width": 1152,
+      "height": 768,
+      "aspect": "3:2",
+      "created": "2026-10-25",
+      "video": "videos/gagarot200-2113466692861038957.mp4",
+      "cover": "covers/gagarot200-2113466692861038957.jpg",
+      "tags": [
+        "自拍",
+        "卧室",
+        "小熊"
       ]
     }
   ]
