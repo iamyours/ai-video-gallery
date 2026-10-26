@@ -31,6 +31,12 @@
       "description": "天桥甩手机转场。",
       "banner": null,
       "banner_alt": null
+    },
+    {
+      "id": "X 每日精选",
+      "description": "简笔画变 3D 手办。",
+      "banner": null,
+      "banner_alt": null
     }
   ],
   "videos": [
@@ -384,6 +390,31 @@
         "黄色",
         "运动装",
         "手势舞"
+      ]
+    },
+    {
+      "slug": "littlemandarin-2112932227202081217",
+      "title_zh": "简笔画变 3D 手办",
+      "title_en": null,
+      "category": "X 每日精选",
+      "episode": null,
+      "order": null,
+      "model": "image2（gpt-image-2） / Muse（muse.ai）",
+      "prompt": "目标 - 把一张简笔画做成 3D 手办，再做 15 秒动画\n规则 - 比例、五官、配色照画来，画里没有的不许加，风格写死成搪胶玩具\n验收 - 正面渲染图和草图拼在一起对照，像了才往下\n\n- Blender 命令行后台跑，模型和材质全用 Python 生成，不下载素材，草图当画纸贴图\n- 开工前先写下从画里看出了什么、看不到的背面打算怎么补\n- 一镜到底：角色从画纸上鼓起来站起来，绕一圈、推近，最后和原画同框\n\n- 最关键的一条：先做白模，从和草图一样的角度渲一张，和草图左右拼成对照图，让模型自己找哪里不像，改好再上色\n- 动作只用部件整体转动和缩放（眨眼、摆尾巴），不碰骨骼绑定",
+      "prompt_source": "@_littlemandarin",
+      "source_url": "https://x.com/_littlemandarin/status/2112932227202081217",
+      "notes": "原提示词要求 15 秒，Muse 单次上限 10 秒，节奏有压缩。",
+      "duration_s": 10.0,
+      "width": 768,
+      "height": 1152,
+      "aspect": "2:3",
+      "created": null,
+      "video": "videos/littlemandarin-2112932227202081217.mp4",
+      "cover": "covers/littlemandarin-2112932227202081217.jpg",
+      "tags": [
+        "简笔画",
+        "3D",
+        "手办"
       ]
     }
   ]

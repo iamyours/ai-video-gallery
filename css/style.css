@@ -523,7 +523,8 @@ a.btn {
   color: var(--muted);
 }
 
-.prompt-source {
+.prompt-source,
+.prompt-note {
   margin: 10px 0 0;
   color: var(--muted);
   font-size: 0.86rem;

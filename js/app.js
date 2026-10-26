@@ -496,6 +496,7 @@
       section.appendChild(el('p', 'prompt-missing', '提示词未记录'));
     }
 
+    appendNote(section, item);
     var sourceText = promptSourceText(item.prompt_source);
     if (sourceText) section.appendChild(el('p', 'prompt-source', '出处：' + sourceText));
 
@@ -1008,6 +1009,7 @@
   function openSheet(item) {
     feedSheetBody.replaceChildren();
     appendPromptBlock(feedSheetBody, '提示词', item.prompt);
+    appendNote(feedSheetBody, item);
     var sourceText = promptSourceText(item.prompt_source);
     if (sourceText) feedSheetBody.appendChild(el('p', 'prompt-source', '出处：' + sourceText));
     if (Array.isArray(item.segments) && item.segments.length) {
@@ -1029,6 +1031,11 @@
     }
     feedSheet.hidden = false;
     sheetOpen = true;
+  }
+
+  function appendNote(parent, item) {
+    if (typeof item.notes !== 'string' || !item.notes.trim()) return;
+    parent.appendChild(el('p', 'prompt-note', item.notes));
   }
 
   function appendPromptBlock(parent, title, prompt) {
