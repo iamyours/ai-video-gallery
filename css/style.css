@@ -275,6 +275,8 @@ main { flex: 1; padding: 22px 0 48px; }
 
 .card[data-aspect="16:9"] .card-media { aspect-ratio: 16 / 9; }
 
+.card[data-aspect="3:2"] .card-media { aspect-ratio: 3 / 2; }
+
 .card-media img {
   width: 100%;
   height: 100%;
@@ -639,6 +641,13 @@ a.btn {
 
 .feed-slide.is-2x3 .feed-frame {
   width: min(100%, calc(100dvh * 2 / 3));
+}
+
+.feed-slide.is-3x2 .feed-frame {
+  width: min(100%, 960px);
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 3 / 2;
 }
 
 .feed-frame video {

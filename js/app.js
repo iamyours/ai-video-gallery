@@ -653,7 +653,7 @@
 
   function aspectClass(aspect) {
     if (aspect === '9:16' || aspect === '2:3') return 'is-portrait';
-    if (aspect === '16:9') return 'is-landscape';
+    if (aspect === '16:9' || aspect === '3:2') return 'is-landscape';
     return 'is-other';
   }
 
@@ -807,8 +807,9 @@
 
   function buildSlide(item, index) {
     var slide = document.createElement('article');
-    slide.className = 'feed-slide ' + (item.aspect === '16:9' ? 'is-landscape' : 'is-portrait');
+    slide.className = 'feed-slide ' + (item.aspect === '16:9' || item.aspect === '3:2' ? 'is-landscape' : 'is-portrait');
     if (item.aspect === '2:3') slide.classList.add('is-2x3');
+    if (item.aspect === '3:2') slide.classList.add('is-3x2');
     slide.dataset.index = String(index);
     var frame = document.createElement('div');
     frame.className = 'feed-frame';
